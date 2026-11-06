@@ -1,27 +1,106 @@
+
 <div class="container">
-  <h2>Cadastro de Tarefas</h2>
-  
-  <form class="form-tarefa">
-    <div class="form-group">
-      <label for="nome">Nome da tarefa:</label>
-      <input type="text" id="nome" placeholder="Digite o nome da tarefa" />
+
+  <header class="cabecalho">
+    <h1>Gerenciador de Tarefas</h1>
+    <p>Organize suas atividades e acompanhe seu progresso.</p>
+  </header>
+
+  <section class="formulario">
+
+    <h2>Cadastro de Tarefas</h2>
+
+    <form (ngSubmit)="cadastrarTarefa()">
+
+      <div class="campo">
+        <label for="titulo">Nome da tarefa</label>
+        <input
+          id="titulo"
+          type="text"
+          [(ngModel)]="titulo"
+          name="titulo"
+          placeholder="Digite o nome da tarefa"
+          required
+        >
+      </div>
+
+      <div class="campo">
+        <label for="descricao">Descrição</label>
+        <textarea
+          id="descricao"
+          [(ngModel)]="descricao"
+          name="descricao"
+          placeholder="Descreva a tarefa"
+          rows="4">
+        </textarea>
+      </div>
+
+      <div class="campo">
+        <label for="dataVencimento">Data de vencimento</label>
+        <input
+          id="dataVencimento"
+          type="date"
+          [(ngModel)]="dataVencimento"
+          name="dataVencimento"
+        >
+      </div>
+
+      <button type="submit" class="btn-cadastrar">
+        + Cadastrar tarefa
+      </button>
+
+    </form>
+
+  </section>
+
+  <section class="lista-tarefas">
+
+    <h2>Minhas Tarefas</h2>
+
+    <div class="sem-tarefas" *ngIf="tarefas.length === 0">
+      <p>Você ainda não possui tarefas cadastradas.</p>
     </div>
 
-    <div class="form-group">
-      <label for="descricao">Descrição:</label>
-      <textarea id="descricao" placeholder="Descreva a tarefa"></textarea>
+    <div
+      class="card-tarefa"
+      *ngFor="let tarefa of tarefas; let i = index"
+      [class.concluida]="tarefa.concluida">
+
+      <div class="info-tarefa">
+
+        <h3>{{ tarefa.titulo }}</h3>
+
+        <p>{{ tarefa.descricao || 'Sem descrição' }}</p>
+
+        <p class="data">
+          Vencimento: {{ tarefa.dataVencimento || 'Não informado' }}
+        </p>
+
+        <span class="status"
+          [class.status-concluida]="tarefa.concluida">
+          {{ tarefa.concluida ? 'Concluída' : 'Pendente' }}
+        </span>
+
+      </div>
+
+      <div class="acoes">
+
+        <button
+          class="btn-concluir"
+          (click)="concluirTarefa(tarefa)">
+          {{ tarefa.concluida ? 'Reabrir' : 'Concluir' }}
+        </button>
+
+        <button
+          class="btn-excluir"
+          (click)="excluirTarefa(i)">
+          Excluir
+        </button>
+
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="data">Data de vencimento:</label>
-      <input type="date" id="data" />
-    </div>
+  </section>
 
-    <button type="submit" class="btn-cadastrar">Cadastrar tarefa</button>
-  </form>
-
-  <hr />
-
-  <h2>Minhas Tarefas</h2>
-  <!-- Seu loop de tarefas aqui -->
 </div>
